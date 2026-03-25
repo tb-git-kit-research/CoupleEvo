@@ -1,15 +1,14 @@
 # CoupleEvo: Evolving Heuristics for Coupled Optimization Problems Using Large Language Models
 
-This repository contains complemntary material for the paper 
-"CoupleEvo: Evolving Heuristics for Coupled Optimization Problems Using Large Language Models".
+This repository contains complementary material for the paper "CoupleEvo: Evolving Heuristics for Coupled Optimization Problems Using Large Language Models".
 
 The repository includes:
  - Prompt templates
  - Code of the best performing heuristic tuples.
- - Full source code **(Will be published on acceptance of the paper.)**
+ - Full source code **(will be published on acceptance of the paper)**.
 
 <p align="center">
-  <img src="docs/figures/coupled_problem_eoh_loop_integrated.drawio.png" width="600"/>
+  <img src="docs/figures/coupled_problem_eoh_loop_integrated.drawio.png" width="100%"/>
 </p>
 <p align="left">
   <em>Figure: CoupleEvo evolves multiple heuristics for coupled optimization problems.</em>
