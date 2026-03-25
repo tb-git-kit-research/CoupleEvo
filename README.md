@@ -4,8 +4,8 @@ This repository contains complementary material for the paper "CoupleEvo: Evolvi
 
 The repository includes:
  - Prompt templates
- - Code of the best performing heuristic tuples.
- - Full source code **(will be published on acceptance of the paper)**.
+ - Code of the best performing heuristic tuples
+ - Full source code **(will be published on acceptance of the paper)**
 
 <p align="center">
   <img src="docs/figures/coupled_problem_eoh_loop_integrated.drawio.png" width="100%"/>
@@ -55,7 +55,7 @@ The key idea is that the destroy heuristics control **which parts of the solutio
 The code snippets in this repository correspond to these destroy operators and can be directly plugged into an LNS loop following this structure.
 
 <p align="center">
-  <img src="docs/figures/alternating_lns.drawio.drawio.png" width="300"/>
+  <img src="docs/figures/alternating_lns.drawio.drawio.png" width="100%"/>
 </p>
 <p align="left">
   <em>Figure: The LLM generates a destroy function for an alternating LNS framework. The LLM-generated parts are colored.</em>
