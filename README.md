@@ -14,7 +14,7 @@ The repository includes:
   <em>Figure: CoupleEvo evolves multiple heuristics for coupled optimization problems.</em>
 </p>
 
-The main contributions of this paper are summarized as follows:
+The main contributions of this work are summarized as follows:
 
 - **CoupleEvo:** We formulate the first LLM-driven framework for automated heuristic design in coupled optimization problems, extending existing single-problem approaches to settings with multiple interdependent NP-hard subproblems.
 
@@ -24,7 +24,7 @@ These strategies govern how heuristics for interacting subproblems are generated
 
 - **Comprehensive Evaluation:** We conduct extensive experimental evaluations on two representative coupled optimization domains:
 Inventory Routing Problem (IRP)
-Multi-robot Multi-bay Unit-Load Pre-Marshalling Problem (MMUPP)  
+Multi-robot Multi-bay Unit-Load Pre-Marshalling Problem (MR-MUPMP)  
 
 For details, we refer to the paper.
 
