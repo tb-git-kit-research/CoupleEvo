@@ -5,7 +5,7 @@ This repository contains complementary material for the paper "CoupleEvo: Evolvi
 The repository includes:
  - Prompt templates
  - Code of the best performing heuristic tuples
- - Full source code **(will be published on acceptance of the paper)**
+ - Full source code
 
 <p align="center">
   <img src="docs/figures/coupled_problem_eoh_loop_integrated.drawio.png" width="100%"/>
