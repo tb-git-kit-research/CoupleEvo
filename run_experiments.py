@@ -2,112 +2,197 @@ import os
 import time
 import subprocess
 from dotenv import load_dotenv
-import glob
 
-# Load environment variables from .env
+#####################################################################################
+# Environment Setup
+#####################################################################################
+
 load_dotenv()
 
-# Get required environment variables
 BASE_PATH = os.getenv("BASE_PATH")
 
 if not BASE_PATH:
     print("BASE_PATH for evaluation not set.")
-    print("Please create a .env file and add this variable")
-    print("For more information, please look into the readme")
+    print("Please create a .env file and add this variable.")
+    print("For more information, please look into the readme.")
     time.sleep(10)
     exit(1)
 
-# Normalize BASE_PATH (wichtig für Cross-Platform)
 BASE_PATH = os.path.abspath(BASE_PATH)
 
-# Derived paths (relativ zu BASE_PATH)
 OUTPUT_PATH = os.path.join(BASE_PATH, "eoh_results")
 INSTANCES_PATH = os.path.join(
     BASE_PATH,
     "data",
     "mr_experiment_instances",
-    "instances"
+    "instances",
 )
 
-# Optional: Debug output
+os.environ.update({
+    "BASE_PATH": BASE_PATH,
+    "OUTPUT_PATH": OUTPUT_PATH,
+    "INSTANCES_PATH": INSTANCES_PATH,
+})
+
 print(f"BASE_PATH: {BASE_PATH}")
 print(f"OUTPUT_PATH: {OUTPUT_PATH}")
 print(f"INSTANCES_PATH: {INSTANCES_PATH}")
 
 #####################################################################################
-#################                 General Settings                  #################
+# General Settings
 #####################################################################################
 
-os.environ["PYTHONUNBUFFERED"] = "False"
-os.environ["TIMEOUT"] = "120"  # Timeout for every request thread in seconds
-os.environ["LOGGING"] = "False"
-os.environ["DETAILED_OUTPUT"] = "False"  # Show all code and explanations
+os.environ.update({
+    "PYTHONUNBUFFERED": "False",
+    "TIMEOUT": "120",
+    "LOGGING": "False",
+    "DETAILED_OUTPUT": "False",
+})
 
 #####################################################################################
-#################              Build Process and Execute            #################
+# LLM Configuration
 #####################################################################################
 
 print("########################## OLLAMA HOSTNAME ##########################")
-os.environ["LLM_LOCAL_URL"] = "https://api.imi-services.imi.kit.edu/api/generate" # "https://api.imi-services.imi.kit.edu" # "https://api3.imi-services.imi.kit.edu"
+os.environ["LLM_LOCAL_URL"] = "https://api.imi-services.imi.kit.edu/api/generate"
 print(os.environ["LLM_LOCAL_URL"])
 
+# Install dependencies quietly
+subprocess.run(
+    ["pip", "install", "."],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+    check=False,
+)
 
-# Install dependencies
-subprocess.run(["pip", "install", "."], stdout=subprocess.DEVNULL)
-
-# Check available LLM models
 print("########################## LLM MODELS AVAILABLE ##########################")
 
-EOH_PROBLEM = "lns_IRP_coupled"
-os.environ["EOH_PROBLEM"] = EOH_PROBLEM
-
-
-MODEL_NAME = 'qwen3-coder:30b' # "gemma3:27b" 'llama3.1:70b', 'gemma2:27b', 'nemotron:latest', 'qwen2.5-coder:32b', 'gpt-4o-2024-08-06'
+MODEL_NAME = "qwen3-coder:30b"
 os.environ["MODEL_NAME"] = MODEL_NAME
 
-IDEA_MODEL_NAME = "o3-mini-2025-01-31"
-os.environ["IDEA_MODEL_NAME"] = IDEA_MODEL_NAME
+#####################################################################################
+# Experiment Configuration
+#####################################################################################
 
-IDEA_EXPERIMENT_TYPE = "NONE"  # strategy or injection or "NONE", strategy_e2
-print(f"IDEA_EXPERIMENT_TYPE: {IDEA_EXPERIMENT_TYPE}")
+print("########################## Experiment ##########################")
 
-if IDEA_EXPERIMENT_TYPE == "NONE":
-    N = 3
-    for i in range(N):  # Run the strategy N times
-        USE_EXAMPLE = 0
-        CONTINUE_TARGET_POP = -1
-        CONTINUE_TARGET_LOOP = -1
+EOH_PROBLEM = "lns_IRP_coupled" #  "lns_IRP_coupled" "lns_multi_robot_upmp_coupled"
+os.environ["EOH_PROBLEM"] = EOH_PROBLEM
 
-        lns_paras = {
-            "num_iters": 1000,
-            "runtime_limit": 10,
-            "no_improvement_time": 10,
-            "no_improvement_iters": 1000,
-        }
-        lns_paras_second = {
-            "num_iters": 1000,
-            "runtime_limit": 10,
-            "no_improvement_time": 10,
-            "no_improvement_iters": 1000,
-        }
+if EOH_PROBLEM == "lns_IRP_coupled":
+    eoh_experiment_file = "U_C_N25_Q18_T?"
+elif EOH_PROBLEM == "lns_multi_robot_upmp_coupled":
+    eoh_experiment_file = (
+        "exp_bay_5_wh_2_fill_0.8_seed_0-9_priority_5_robots_2_ad_1010.json"
+    )
+else:
+    raise ValueError(f"Unsupported EOH_PROBLEM: {EOH_PROBLEM}")
 
-        subprocess.run([
-                "ceoh", "run", EOH_PROBLEM,
-                "--model_name", MODEL_NAME,
-                "--ec_operators", "e1,e2,m1,m2",
-                "--ec_n_pop", "5",
-                "--ec_pop_size", "20",
-                "--ec_m", "5",
-                "--use_example", str(USE_EXAMPLE),
-                "--continue_target_pop", str(CONTINUE_TARGET_POP),
-                "--eoh_experiment_file", "U_C_N25_Q18_T?",
-                "--lns_paras", str(lns_paras),
-                "--lns_paras_second", str(lns_paras_second),
-                #"--continue_target_folder", r"C:\Users\dq0913\PycharmProjects\multibay-reshuffling\eoh_results\results_20251215_123745_lns_multi_robot_upmp_coupled_qwen25coder32b_ueFalse_uiFalse_uitypeNone",
-                "--alns_cycles_iters", str(1000),
-                "--alns_cycles_timeout", str(60),
-                "--coupled_problems", "lns_IRP_inventory," # problem with defined prompts
-                                      "lns_IRP_vrp",
-                "--coupled_iterations", str(4),
-                #"--continue_target_loop", str(CONTINUE_TARGET_LOOP),
-            ])
+coordination_strategy = "sequential"  # "integrated", "sequential", "iterate"
+
+#####################################################################################
+# Strategy Configuration
+#####################################################################################
+
+if coordination_strategy == "integrated":
+    config = {
+        "ec_operators": "e1coupled,e2coupled,m1coupled,m1coupled",
+        "ec_n_pop": "40",
+        "ec_pop_size": "20",
+        "ec_m": "5",
+        "coupled_iterations": "1",
+        "ec_initial_operator": "i1coupled",
+    }
+elif coordination_strategy == "sequential":
+    config = {
+        "ec_operators": "e1,e2,m1,m2",
+        "ec_n_pop": "20",
+        "ec_pop_size": "20",
+        "ec_m": "5",
+        "coupled_iterations": "1",
+        "ec_initial_operator": "i1",
+    }
+elif coordination_strategy == "iterate":
+    config = {
+        "ec_operators": "e1,e2,m1,m2",
+        "ec_n_pop": "5",
+        "ec_pop_size": "20",
+        "ec_m": "5",
+        "coupled_iterations": "4",
+        "ec_initial_operator": "i1",
+    }
+else:
+    raise ValueError(f"Unsupported coordination_strategy: {coordination_strategy}")
+
+#####################################################################################
+# LNS Parameters
+#####################################################################################
+
+if EOH_PROBLEM == "lns_IRP_coupled":
+    lns_paras = {
+        "num_iters": 1000,
+        "runtime_limit": 10,
+        "no_improvement_time": 10,
+        "no_improvement_iters": 1000,
+    }
+
+    lns_paras_second = lns_paras.copy()
+
+    coupled_problems = (
+        "None"
+        if coordination_strategy == "integrated"
+        else "lns_IRP_inventory,lns_IRP_vrp"
+    )
+
+elif EOH_PROBLEM == "lns_multi_robot_upmp_coupled":
+    lns_paras = {
+        "num_iters": 10,
+        "runtime_limit": 10,
+        "no_improvement_time": 10,
+        "no_improvement_iters": 10,
+    }
+
+    lns_paras_second = {
+        "num_iters": 90,
+        "runtime_limit": 10,
+        "no_improvement_time": 10,
+        "no_improvement_iters": 90,
+    }
+
+#####################################################################################
+# Execution
+#####################################################################################
+
+def run_experiment():
+    base_cmd = [
+        "ceoh", "run", EOH_PROBLEM,
+        "--model_name", MODEL_NAME,
+        "--ec_operators", config["ec_operators"],
+        "--ec_n_pop", config["ec_n_pop"],
+        "--ec_pop_size", config["ec_pop_size"],
+        "--ec_m", config["ec_m"],
+        "--use_example", "0",
+        "--eoh_experiment_file", eoh_experiment_file,
+        "--lns_paras", str(lns_paras),
+        "--lns_paras_second", str(lns_paras_second),
+        "--alns_cycles_iters", "1000",
+        "--coupled_iterations", config["coupled_iterations"],
+    ]
+
+    if coordination_strategy == "integrated":
+        base_cmd.extend([
+            "--alns_cycles_timeout", "60",
+            "--ec_initial_operator", config["ec_initial_operator"],
+        ])
+    else:
+        base_cmd.extend([
+            "--alns_cycles_timeout", "60",
+            "--coupled_problems", coupled_problems,
+        ])
+
+    subprocess.run(base_cmd, check=False)
+
+
+N = 3
+for i in range(N):
+    run_experiment()
