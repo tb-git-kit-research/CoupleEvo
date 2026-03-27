@@ -1,8 +1,4 @@
-# Copyright (c) 2025
-#           Thomas Bömer (thomas.bömer@tu-dortmund.de)
-#           Nico Koltermann (nico.koltermann@tu-dortmund.de)
-#
-# MIT License
+
 
 import multiprocessing as mp
 import traceback
