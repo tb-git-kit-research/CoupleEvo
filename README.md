@@ -29,8 +29,8 @@ Multi-robot Multi-bay Unit-Load Pre-Marshalling Problem (MR-MUPMP)
 
 For details, we refer to the paper.
 
-
-
-## Prompt Templates
-
-
+### Run the project
+- unzip data.zip to here
+- create an .env with BASE_PATH and your API Keys eg. OPENAI_API_KEY, OPENROUTER_API_KEY, DEEPSEEK_API_KEY
+- configure run_experiments.py
+- run run_experiments.py
