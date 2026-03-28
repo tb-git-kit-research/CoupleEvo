@@ -14,7 +14,7 @@ The repository includes:
 <p align="left">
   <em>Figure: CoupleEvo evolves multiple heuristics for coupled optimization problems.</em>
 </p>
-
+ 
 The main contributions of this work are summarized as follows:
 
 - **CoupleEvo:** We formulate the first LLM-driven framework for automated heuristic design in coupled optimization problems, extending existing single-problem approaches to settings with multiple interdependent NP-hard subproblems.
