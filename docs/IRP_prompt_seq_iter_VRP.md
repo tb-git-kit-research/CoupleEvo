@@ -1,3 +1,13 @@
+I am solving a coupled optimization problem consisting of 2 interacting subproblems.  
+I will fist describe the coupled problem and than each subproblem.  
+
+Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** frameworkfor the Inventory Routing Problem.  
+The system consists of two coupled LNS optimizers (inventory planning and vehicle routing) that alternate.  
+The solution of the inventory planning is passed to the vehicle routing.  
+The vehicle routing solution is passed to the inventory planning.  
+
+The overall objective is to jointly determine optimal inventory replenishment decisions and distribution routes over the planning horizon while minimizing sum of inventory and routing costs.
+
 Your task is to design a heuristic that decides which parts of the current solution to remove in the vehicle routing part. The current solution consists of explicit vehicle routes stored as `day_routes[v] = [(customer_i, quantity_q), ...]` indicating the quantity delivered to customer `i` by vehicle `v`. The framework iterates each day and passes day_routes for the respective day to the heuristic. Your task is to design a heuristic that scores each customer of the current solution in the vehicle routing part. The highest scored customer(s) will be removed from the current solution. Each customer i must receive exactly one score. You must not assign scores per (v, i) for this task.After destruction, a repair procedure based on cost-guided backtracking will attempt to reinsert each unassigned delivery `(i, q)` into the routes while respecting vehicle capacity constraints and minimizing additional travel cost. Therefore, the heuristic must carefully select which customers to remove and how many of them to destroy in order to generate a meaningful but computationally manageable neighborhood. The solution will be repaired in the order starting with highest ranked to the lowest scored customer. Further the heuristic should decide how many moves elements be removed from the current solution. 
 
 I have 5 existing algorithms with their codes as follows: 
