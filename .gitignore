@@ -194,3 +194,4 @@ experiments/*
 
 !./data/*
 /data/
+!/eoh_results/

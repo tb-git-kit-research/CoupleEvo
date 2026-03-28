@@ -38,6 +38,8 @@ print(f"BASE_PATH: {BASE_PATH}")
 print(f"OUTPUT_PATH: {OUTPUT_PATH}")
 print(f"INSTANCES_PATH: {INSTANCES_PATH}")
 
+os.makedirs(OUTPUT_PATH, exist_ok=True)
+
 #####################################################################################
 # General Settings
 #####################################################################################
