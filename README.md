@@ -9,7 +9,7 @@ The repository includes:
  - Full source code
 
 <p align="center">
-  <img src="docs/figures/coupled_problem_eoh_loop_integrated.drawio_breit.png" width="100%"/>
+  <img src="docs/figures/coupled_problem_eoh_loop_integrated.drawio_breit1.png" width="100%"/>
 </p>
 <p align="left">
   <em>Figure: CoupleEvo evolves multiple heuristics for coupled optimization problems.</em>
