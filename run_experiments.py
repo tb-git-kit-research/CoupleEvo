@@ -56,7 +56,7 @@ os.environ.update({
 #####################################################################################
 
 print("########################## OLLAMA HOSTNAME ##########################")
-os.environ["LLM_LOCAL_URL"] = "https://api.imi-services.imi.kit.edu/api/generate"
+os.environ["LLM_LOCAL_URL"] = "YOUR URL HERE"  # e.g., "http://localhost:11434"
 print(os.environ["LLM_LOCAL_URL"])
 
 # Install dependencies quietly
