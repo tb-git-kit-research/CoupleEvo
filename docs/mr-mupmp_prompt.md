@@ -1,14 +1,14 @@
 I am solving a coupled optimization problem consisting of 2 interacting subproblems.  
-I will fist describe the coupled problem and than each subproblem.  
+I will first describe the coupled problem and then each subproblem.  
 
-Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** frameworkfor the Multi Robot Multibay Unit-Load Premarshalling Problem.  
+Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** framework for the Multi-Robot Multibay Unit-Load Premarshalling Problem.  
 The system consists of two coupled LNS optimizers (move sequence search and vehicle routing) that alternate.  
 The solution of the move sequence search is passed to the vehicle routing.  
 The vehicle routing solution is passed to the move sequence search.  
 
 The overall objective is to find a sequence of moves to sort a warehouse and to minimize the makespan operating these moves with multiple robots.  
 The move sequence search part optimizes for the fewest moves and minimal loaded move distance.  
-The vehicle routing part minimizes for the makespan.  
+The vehicle routing part minimizes the makespan.  
 
 ==============================  
 
