@@ -1,7 +1,7 @@
 I am solving a coupled optimization problem consisting of 2 interacting subproblems.  
-I will fist describe the coupled problem and than each subproblem.  
+I will first describe the coupled problem and then each subproblem.  
 
-Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** frameworkfor the Inventory Routing Problem.  
+Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** framework for the Inventory Routing Problem.  
 The system consists of two coupled LNS optimizers (inventory planning and vehicle routing) that alternate.  
 The solution of the inventory planning is passed to the vehicle routing.  
 The vehicle routing solution is passed to the inventory planning.  
@@ -63,7 +63,7 @@ The `routes` structure must be consistent with the nonzero entries in `shipments
 'cust_demand': 2D array of shape (N, T) with shipment demand of each customer in each period.<br>
 'rng' is a NumPy random number generator (type: numpy.random.Generator).
 
-scores' must be a 3-level nested list scores[t][v][i], where each entry is a real-valued priority assigned to the shipment element shipments[t, v, i] 
+'scores' must be a 3-level nested list scores[t][v][i], where each entry is a real-valued priority assigned to the shipment element shipments[t, v, i] 
 A value of 0 indicates that the shipment element is inactive and should not be destroyed.
 score assigned by the destroy heuristic.
 'k' must be an integer.
