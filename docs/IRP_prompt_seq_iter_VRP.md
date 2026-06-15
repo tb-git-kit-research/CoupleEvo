@@ -1,7 +1,7 @@
 I am solving a coupled optimization problem consisting of 2 interacting subproblems.  
-I will fist describe the coupled problem and than each subproblem.  
+I will first describe the coupled problem and then each subproblem.  
 
-Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** frameworkfor the Inventory Routing Problem.  
+Act as a professional algorithm designer. Design heuristics to be used inside a **Large Neighborhood Search (LNS)** framework for the Inventory Routing Problem.  
 The system consists of two coupled LNS optimizers (inventory planning and vehicle routing) that alternate.  
 The solution of the inventory planning is passed to the vehicle routing.  
 The vehicle routing solution is passed to the inventory planning.  
